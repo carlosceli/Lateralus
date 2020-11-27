@@ -1,0 +1,23 @@
+{
+  "short_name": "Lateralus",
+  "name": "Tienda Lateralus",
+  "description": "tienda de componentes online",
+  "icons": [
+    {
+        "src": "/images/CORE7.png",
+        "type": "image/png",
+        "sizes": "192x192"
+    },
+    {
+      "src": "/images/CORE72.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#3498db",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#3498db",
+  "orientation": "portrait"
+  }
