@@ -1,8 +1,81 @@
+//nuevo cache dinamico
+importScripts('js/libs/sw-utils.js');
+
+const DYNAMIC_CACHE='dynamic-v1';
+const INMUTABLE_CACHE='inmutable-v1';
+const STATIC_CACHE='static-v1';
+
+const APP_SHELL=[
+    // '/',
+    '/index.html',
+    '/index2.html',
+    '/services.html',
+    '/shop.html',
+    '/pcbuild.html',
+    '/shop_cart.html',
+    '/contact.html',
+    '/css/style.css',
+    '/js/app.js',
+    '/crud1_index.html',
+    '/crud1_show.html',
+    '/crud1_create.html',
+    '/jqCrud_create.html',
+    '/jqCrud_show.html',
+    '/offline/offline.html',
+    'js/libs/sw-utils.js'
+];
+
+const APP_SHELL_INMUTABLE=[
+    '/css/bootstrap.min.css',
+    'js/libs/jquery.js'
+];
+
+self.addEventListener('install', e=>{
+
+    const cacheStatic=caches.open(STATIC_CACHE).then(cache=>
+        cache.addAll(APP_SHELL));
+
+    const cacheInmutable=caches.open(INMUTABLE_CACHE).then(cache=>
+        cache.addAll(APP_SHELL_INMUTABLE));
+    e.waitUntil(Promise.all([cacheStatic , cacheInmutable]));
+});
+
+self.addEventListener('activate', e=>{
+
+    const respuesta= caches.keys().then(keys=>{
+        keys.forEach(key=>{
+            if(key!== STATIC_CACHE && key.includes('static')){
+                return caches.delete(key);
+            }
+        });
+    });
+    e.waitUntil(respuesta);
+});
+
+
+self.addEventListener('fetch', e=>{
+    const respuesta= caches.match(e.request).then(res=>{
+
+        if (res){
+            return res;
+        }else{
+            return fetch(e.request).then(newRes=>{
+                return actualizaCacheDinamico(DYNAMIC_CACHE, e.request, newRes);
+
+            });
+        }
+    });
+    e.respondWith(respuesta);
+});
+
+
+
+
 
 
 //3 3.	Guardar el APP SHELL a la hora de instalar el SW 
 
-
+/*
 const CACHE_STATIC_NAME='static-v4';
 const CACHE_DYNAMIC_NAME='dynamic-v1';
 const CACHE_INMUTABLE_NAME='inmutable-v1';
@@ -71,7 +144,7 @@ self.addEventListener('activate', e=>{
         });
     });
     e.waitUntil(respuesta);
-});
+});*/
 
 //4. estrategia cache only
 /*
@@ -111,7 +184,7 @@ self.addEventListener('fetch', e=>{
 
 
 //6. Estrategia network with cache fallback
-
+/*
 self.addEventListener('fetch', e=>{
     const respuesta=caches.match(e.request)
         .then(res=>{
@@ -136,7 +209,7 @@ self.addEventListener('fetch', e=>{
         });
 
     e.respondWith(respuesta);
-});
+});*/
 
 
 /*

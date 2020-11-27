@@ -1,4 +1,13 @@
+//nuevo
+var url=window.location.href;
+var swlocation='/sw.js';
+if (navigator.serviceWorker){
 
+    if(url.includes('localhost')){
+        swlocation='/sw.js';
+    }
+    navigator.serviceWorker.register(swlocation);
+}
 //confirmar si podemos usar el serviceworker en el navegador
 /*
 if(navigator.serviceWorker){
@@ -6,12 +15,12 @@ if(navigator.serviceWorker){
 }
 */
 
-
+/*
 if(navigator.serviceWorker){
 		
 
 	navigator.serviceWorker.register('/sw.js');
-}
+}*/
 /*
 //4. peticiones fetch
 fetch("https://reqres.in/api/users")
